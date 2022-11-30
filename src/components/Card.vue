@@ -1,11 +1,13 @@
 <template>
   <div class="card">
-        <img src="../assets/card-1.jpg" alt="">
+        <img :src="card.image" alt="">
       </div>
 </template>
 
 <script>
-
+  export default{
+    props:["card"]
+  }
 </script>
 
 <style scoped>
@@ -19,7 +21,6 @@
     transition: box-shadow .5s;
     cursor: pointer;
   }
-
   .card:hover{
     box-shadow: 0px 5px 48px #666;
     transition: box-shadow .5s;
