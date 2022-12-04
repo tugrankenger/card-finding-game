@@ -4,7 +4,12 @@
     <h4 class="description">After the choose your card, click at the closed card</h4>
 
     <div class="container">
-      <app-card v-for="card in cards" :card="card"></app-card>
+      <app-card 
+      :class="{'shadow': selectedCard == card.id}"
+      @click.native="(selectedCard = card.id)"
+      v-for="card in cards" 
+      :card="card"
+      ></app-card>
     </div>
     <div class="container">
       <app-default-card></app-default-card>
@@ -22,6 +27,8 @@
     },
     data(){
       return{
+        selectedCard: null,
+        answer : {},
         cards:[
           {id:1, component:"app-cards", image:"/src/assets/card-1.jpg"},
           {id:2, component:"app-cards", image:"/src/assets/card-2.jpg"},
@@ -30,6 +37,12 @@
           {id:5, component:"app-cards", image:"/src/assets/card-5.jpg"},
         ]
       }
+    },
+    created(){
+      let answer = Math.ceil(Math.random() * this.cards.length)
+      // console.log(answer)
+      this.answer = this.cards[answer-1]
+      console.log(this.answer)
     }
   }
 </script>
@@ -46,6 +59,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .shadow{
+    box-shadow:  0px 5px 48px rgb(72, 161, 250) !important;
+    /* transition: all .5s; */
   }
 
 </style>
