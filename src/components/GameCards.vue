@@ -4,12 +4,16 @@
     <h4 class="description">After the choose your card, click at the closed card</h4>
 
     <div class="container">
-      <app-card 
-      :class="{'shadow': selectedCard == card.id}"
-      @click.native="(selectedCard = card.id)"
-      v-for="card in cards" 
-      :card="card"
-      ></app-card>
+      <transition-group name="rotate-all" appear> <!--add apper for when page load, show animation-->
+        <app-card 
+          :class="{ 'shadow': selectedCard == card.id }" 
+          @click.native="(selectedCard = card.id)"
+          v-for="card in cards" 
+          :card="card"
+          :key="card"
+          >
+        </app-card>
+      </transition-group>
     </div>
     <div class="container">
       <app-default-card></app-default-card>
@@ -18,52 +22,86 @@
 </template>
 
 <script>
-  import Card from "./Card.vue"
-  import DefaultCard from "../components/DefaultCard.vue"
-  export default{
-    components:{
-      appCard: Card,
-      appDefaultCard: DefaultCard
-    },
-    data(){
-      return{
-        selectedCard: null,
-        answer : {},
-        cards:[
-          {id:1, component:"app-cards", image:"/src/assets/card-1.jpg"},
-          {id:2, component:"app-cards", image:"/src/assets/card-2.jpg"},
-          {id:3, component:"app-cards", image:"/src/assets/card-3.jpg"},
-          {id:4, component:"app-cards", image:"/src/assets/card-4.jpg"},
-          {id:5, component:"app-cards", image:"/src/assets/card-5.jpg"},
-        ]
-      }
-    },
-    created(){
-      let answer = Math.ceil(Math.random() * this.cards.length)
-      // console.log(answer)
-      this.answer = this.cards[answer-1]
-      console.log(this.answer)
+import Card from "./Card.vue"
+import DefaultCard from "../components/DefaultCard.vue"
+export default {
+  components: {
+    appCard: Card,
+    appDefaultCard: DefaultCard
+  },
+  data() {
+    return {
+      selectedCard: null,
+      answer: {},
+      cards: [
+        { id: 1, component: "app-cards", image: "/src/assets/card-1.jpg" },
+        { id: 2, component: "app-cards", image: "/src/assets/card-2.jpg" },
+        { id: 3, component: "app-cards", image: "/src/assets/card-3.jpg" },
+        { id: 4, component: "app-cards", image: "/src/assets/card-4.jpg" },
+        { id: 5, component: "app-cards", image: "/src/assets/card-5.jpg" },
+      ]
     }
-  }
+  },
+  created() {
+    let answer = Math.ceil(Math.random() * this.cards.length)
+    // console.log(answer)
+    this.answer = this.cards[answer - 1]
+    console.log(this.answer)
+  },
+}
 </script>
 
 <style scoped>
-  .title span{
-    color: rgb(63, 173, 63);
-  }
-  .title strong{
-    color: rgb(102, 22, 22);
-  }
+.title span {
+  color: rgb(63, 173, 63);
+}
 
-  .container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+.title strong {
+  color: rgb(102, 22, 22);
+}
 
-  .shadow{
-    box-shadow:  0px 5px 48px rgb(72, 161, 250) !important;
-    /* transition: all .5s; */
-  }
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.shadow {
+  box-shadow: 0px 5px 48px rgb(72, 161, 250) !important;
+  /* transition: all .5s; */
+}
+
+.rotate-all-enter{}
+.rotate-all-enter-active{
+  animation: rotate-all ease-in-out 2s forwards;
+}
+.rotate-all-leave{}
+.rotate-all-leave-active{}
+
+@keyframes rotate-all{
+  from{
+    transform: rotateY(0);
+  }
+  to{
+    transform: rotateY(1080deg);
+  }
+}
+
+/* .bounce-enter-active {
+  animation: bounce-in 0.5s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+} */
 </style>
