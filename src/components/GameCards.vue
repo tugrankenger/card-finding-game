@@ -5,22 +5,14 @@
 
     <div class="container">
       <transition-group name="rotate-all" appear> <!--add apper for when page load, show animation-->
-        <app-card 
-          :class="{ 'shadow': selectedCard == card.id }" 
-          @click.native="(selectedCard = card.id)"
-          v-for="card in cards" 
-          :card="card"
-          :key="card"
-          >
+        <app-card :class="{ 'shadow': selectedCard == card.id }" @click.native="(selectedCard = card.id)"
+          v-for="card in cards" :card="card" :key="card">
         </app-card>
       </transition-group>
     </div>
     <div class="container">
       <transition name="rotate" mode="out-in">
-        <component :is="activeCard"
-        :card="answer"
-        @click.native="showCard(answer)"
-        >
+        <component :is="activeCard" :card="answer" @click.native="showCard(answer)">
         </component>
       </transition>
     </div>
@@ -39,7 +31,7 @@ export default {
     return {
       selectedCard: null,
       answer: {},
-      activeCard:'app-default-card',
+      activeCard: 'app-default-card',
       cards: [
         { id: 1, component: "app-card", image: "/src/assets/card-1.jpg" },
         { id: 2, component: "app-card", image: "/src/assets/card-2.jpg" },
@@ -55,9 +47,22 @@ export default {
     this.answer = this.cards[answer - 1]
     console.log(this.answer)
   },
-  methods:{
-    showCard(answer){
-      this.activeCard = answer.component
+  methods: {
+    showCard(answer) {
+      if (this.selectedCard == null) {
+        alert("Please before select a card!")
+      } else {
+        this.activeCard = answer.component
+        setTimeout(() => {
+          if (answer.id == this.selectedCard) {
+            // alert("You are done!!")
+            this.$emit("isCorrectComponent", 'app-celebrate')
+          } else {
+            // alert("Wrong choice!")
+            this.$emit("isCorrectComponent", 'app-failure')
+          }
+        }, 2000)
+      }
     }
   }
 }
@@ -83,45 +88,54 @@ export default {
   /* transition: all .5s; */
 }
 
-.rotate-all-enter{}
-.rotate-all-enter-active{
+.rotate-all-enter {}
+
+.rotate-all-enter-active {
   animation: rotate-all ease-in-out 2s forwards;
 }
-.rotate-all-leave{}
-.rotate-all-leave-active{}
 
-@keyframes rotate-all{
-  from{
+.rotate-all-leave {}
+
+.rotate-all-leave-active {}
+
+@keyframes rotate-all {
+  from {
     transform: rotateY(0);
   }
-  to{
+
+  to {
     transform: rotateY(1080deg);
   }
 }
 
-.rotate-enter{}
-.rotate-enter-active{
-  animation: rotate-in 1s ease-in-out forwards;
-}
-.rotate-leave{}
-.rotate-leave-acitve{
-  animation: rotate-out 1s ease-in-out forwards;
+.rotate-enter {}
+
+.rotate-enter-active {
+  animation: rotate-in .5s ease-in-out forwards;
 }
 
-@keyframes rotate-in{
-  from{
+.rotate-leave {}
+
+.rotate-leave-acitve {
+  animation: rotate-out .5s ease-in-out forwards;
+}
+
+@keyframes rotate-in {
+  from {
     transform: rotateY(90deg);
   }
-  to{
+
+  to {
     transform: rotateY(0deg);
   }
 }
 
-@keyframes rotate-out{
-  from{
+@keyframes rotate-out {
+  from {
     transform: rotateY(0deg);
   }
-  to{
+
+  to {
     transform: rotateY(90deg);
   }
 }
