@@ -1,4 +1,5 @@
-let W = window.innerWidth;
+function loadConfetti(){
+  let W = window.innerWidth;
 let H = window.innerHeight;
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
@@ -101,3 +102,4 @@ for (var i = 0; i < maxConfettis; i++) {
 canvas.width = W;
 canvas.height = H;
 Draw();
+}
